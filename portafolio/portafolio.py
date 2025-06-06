@@ -55,29 +55,65 @@ def index() -> rx.Component:
         # Contenido principal
         rx.vstack(
             rx.text(
-                "My name is Daniel. A diferencia de la mayoría de los desarrolladores me he acercado con pasión a la tecnología en mi madurez.",
-                color="#ccc",
-                font_family="sans-serif"
+                "Desarrollador Full Stack & Entusiasta de la Tecnología",
+                font_size="1.2em",
+                color="gray",
+                margin_bottom="2em",
+            ),
+            rx.hstack(
+                rx.vstack(
+                    rx.icon("code", size=32, color="#4CAF50"),
+                    rx.heading("Desarrollo", size="3"),
+                    rx.text("Creando soluciones digitales innovadoras", color="gray"),
+                    padding="2em",
+                    background_color="#2d2d2d",
+                    border_radius="lg",
+                    width="250px",
+                    align_items="center",
+                    _hover={"transform": "translateY(-5px)", "transition": "all 0.3s ease"},
+                ),
+                rx.vstack(
+                    rx.icon("database", size=32, color="#4CAF50"),
+                    rx.heading("Backend", size="3"),
+                    rx.text("Arquitectura robusta y escalable", color="gray"),
+                    padding="2em",
+                    background_color="#2d2d2d",
+                    border_radius="lg",
+                    width="250px",
+                    align_items="center",
+                    _hover={"transform": "translateY(-5px)", "transition": "all 0.3s ease"},
+                ),
+                rx.vstack(
+                    rx.icon("palette", size=32, color="#4CAF50"),
+                    rx.heading("Diseño", size="3"),
+                    rx.text("Interfaces intuitivas y atractivas", color="gray"),
+                    padding="2em",
+                    background_color="#2d2d2d",
+                    border_radius="lg",
+                    width="250px",
+                    align_items="center",
+                    _hover={"transform": "translateY(-5px)", "transition": "all 0.3s ease"},
+                ),
+                spacing="2",
+                margin_bottom="3em",
             ),
             rx.text(
-                "Un aspecto a valorar que me permite ofrecer la ilusión de quién inicia un nuevo camino profesional y la solvencia de la experiencia.",
-                color="#ccc",
-                font_family="sans-serif"
+                "Explora mis proyectos y descubre cómo puedo ayudarte a materializar tus ideas",
+                color="gray",
+                text_align="center",
+                max_width="600px",
             ),
-            rx.text(
-                "Mi formación se ha realizado tanto en  cursos guiados como autodidacta.",
-                color="#ccc",
-                font_family="sans-serif"
+            rx.link(
+                rx.button(
+                    "Ver Proyectos",
+                    color_scheme="green",
+                    _hover={"background_color": "#45a049"},
+                ),
+                href="/proyectos",
+                margin_top="2em",
             ),
-            rx.text(
-                "Me ofrezco para participar en proyectos y desplegar todas mis  habilidades.",
-                color="#ccc",
-                font_family="sans-serif"
-            ),
-            spacing="1em",
-            align_items="start",
             width="100%",
-            max_width="800px",
+            align_items="center",
             padding="2em"
         ),
         # Pie de página con copyright
