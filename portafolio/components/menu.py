@@ -2,22 +2,29 @@ import reflex as rx
 
 def menu():
     return rx.hstack(
-        rx.link(
-            rx.text("Portafolio", font_size="1.5em", font_weight="bold", color="white"), # Color blanco para el título
-            href="/" # Enlace a la página principal
+        rx.heading(
+            "PORTAFOLIO",
+            size="xl",
+            color="white",
+            font_family="'Montserrat', sans-serif",
+            font_weight="700",
+            letter_spacing="0.1em",
+            _hover={"color": "#888"},
+            transition="all 0.3s ease"
         ),
-        rx.spacer(), # Empuja los siguientes elementos a la derecha
+        rx.spacer(),
         rx.hstack(
-            # Enlaces a redes sociales con estilo sutil
-            rx.link("Mail", href="mailto:dgarciamartinez53@gmail.com", is_external=True, color="#888", _hover={"color": "white"}, margin_left="1em", font_size="0.9em"), # Texto/Icono sutil
-            rx.link("GitHub", href="#", is_external=True, color="#888", _hover={"color": "white"}, margin_left="1em", font_size="0.9em"), # Texto/Icono sutil (reemplazar # con tu URL)
-            rx.link("LinkedIn", href="#", is_external=True, color="#888", _hover={"color": "white"}, margin_left="1em", font_size="0.9em"), # Texto/Icono sutil (reemplazar # con tu URL)
-            # Menú de navegación principal (como en la imagen, con enlaces sencillos)
-            # rx.link("Projects", href="/proyectos", margin_left="2em") # Podríamos añadir aquí un enlace a proyectos
-            spacing="1em", # Espacio entre los enlaces de redes sociales
+            rx.link("Inicio", href="/", color="#ccc", _hover={"color": "white", "text_decoration": "underline"}, font_family="sans-serif"),
+            rx.link("Quién soy", href="/quien-soy", color="#ccc", _hover={"color": "white", "text_decoration": "underline"}, font_family="sans-serif"),
+            rx.link("Proyectos", href="/proyectos", color="#ccc", _hover={"color": "white", "text_decoration": "underline"}, font_family="sans-serif"),
+            rx.link("Blog", href="/blog", color="#ccc", _hover={"color": "white", "text_decoration": "underline"}, font_family="sans-serif"),
+            rx.link("Contacto", href="/contacto", color="#ccc", _hover={"color": "white", "text_decoration": "underline"}, font_family="sans-serif"),
+            spacing="2em",
         ),
-        padding="1em",
-        # Considerar un color de fondo para la barra superior si es necesario
-        # background_color="#f0f0f0",
         width="100%",
+        padding="1em 2em",
+        background_color="#111",
+        position="sticky",
+        top="0",
+        z_index="1000"
     ) 

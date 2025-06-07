@@ -8,49 +8,87 @@ def proyectos_page() -> rx.Component:
     
     return rx.vstack(
         menu(),
-        rx.heading("Proyectos", size="2xl", color="white", margin_bottom="1em"),
+        rx.heading("Proyectos", size="2xl", color="white", font_family="sans-serif", margin_bottom="2em"),
         rx.vstack(
             rx.vstack(
-                rx.heading("Repo 1", size="lg", color="white"),
-                rx.text("Descripción del repo 1", color="#ccc"),
-                rx.link(
-                    "Ver en GitHub",
-                    href="https://github.com/usuario/repo1",
-                    color="#444",
-                    background_color="white",
-                    padding="0.5em 1em",
-                    border_radius="0.5em",
-                    _hover={"background_color": "#eee"}
+                rx.heading("Portafolio Personal", size="lg", color="white", font_family="sans-serif"),
+                rx.text(
+                    "Desarrollo de un portafolio personal utilizando Reflex, un framework moderno para crear aplicaciones web en Python. El proyecto incluye diseño responsive, animaciones suaves y una interfaz de usuario intuitiva.",
+                    color="gray",
+                    font_size="1.2em",
+                    margin_bottom="1em"
                 ),
-                padding="1em",
-                border="1px solid #444",
-                border_radius="0.5em",
+                rx.hstack(
+                    rx.link(
+                        "Ver en GitHub",
+                        href="https://github.com/danielgil/portafolio",
+                        color="#444",
+                        background_color="white",
+                        padding="0.5em 1em",
+                        border_radius="0.5em",
+                        _hover={"background_color": "#eee", "transform": "translateY(-2px)", "transition": "all 0.3s ease"}
+                    ),
+                    rx.link(
+                        "Ver Demo",
+                        href="/",
+                        color="white",
+                        background_color="#2d2d2d",
+                        padding="0.5em 1em",
+                        border_radius="0.5em",
+                        _hover={"background_color": "#3d3d3d", "transform": "translateY(-2px)", "transition": "all 0.3s ease"}
+                    ),
+                    spacing="1em"
+                ),
+                padding="2em",
+                background_color="#2d2d2d",
+                border_radius="lg",
                 width="100%",
-                margin_bottom="1em"
+                margin_bottom="2em",
+                _hover={"transform": "translateY(-5px)", "transition": "all 0.3s ease"}
             ),
             rx.vstack(
-                rx.heading("Repo 2", size="lg", color="white"),
-                rx.text("Descripción del repo 2", color="#ccc"),
-                rx.link(
-                    "Ver en GitHub",
-                    href="https://github.com/usuario/repo2",
-                    color="#444",
-                    background_color="white",
-                    padding="0.5em 1em",
-                    border_radius="0.5em",
-                    _hover={"background_color": "#eee"}
+                rx.heading("Proyecto 2", size="lg", color="white", font_family="sans-serif"),
+                rx.text(
+                    "Descripción detallada del segundo proyecto. Aquí se incluirá información sobre las tecnologías utilizadas, los desafíos enfrentados y las soluciones implementadas.",
+                    color="gray",
+                    font_size="1.2em",
+                    margin_bottom="1em"
                 ),
-                padding="1em",
-                border="1px solid #444",
-                border_radius="0.5em",
+                rx.hstack(
+                    rx.link(
+                        "Ver en GitHub",
+                        href="https://github.com/danielgil/proyecto2",
+                        color="#444",
+                        background_color="white",
+                        padding="0.5em 1em",
+                        border_radius="0.5em",
+                        _hover={"background_color": "#eee", "transform": "translateY(-2px)", "transition": "all 0.3s ease"}
+                    ),
+                    rx.link(
+                        "Ver Demo",
+                        href="#",
+                        color="white",
+                        background_color="#2d2d2d",
+                        padding="0.5em 1em",
+                        border_radius="0.5em",
+                        _hover={"background_color": "#3d3d3d", "transform": "translateY(-2px)", "transition": "all 0.3s ease"}
+                    ),
+                    spacing="1em"
+                ),
+                padding="2em",
+                background_color="#2d2d2d",
+                border_radius="lg",
                 width="100%",
-                margin_bottom="1em"
+                margin_bottom="2em",
+                _hover={"transform": "translateY(-5px)", "transition": "all 0.3s ease"}
             ),
             width="100%",
-            max_width="800px"
+            max_width="800px",
+            align_items="center"
         ),
         width="100%",
         min_height="100vh",
-        background_color="#0a0a0a",
-        padding="2em"
+        background_color="#1a1a1a",
+        padding="2em",
+        spacing="2em"
     )
