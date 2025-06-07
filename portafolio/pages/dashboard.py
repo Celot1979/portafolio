@@ -10,16 +10,52 @@ def dashboard_page() -> rx.Component:
     return rx.vstack(
         menu(),
         rx.heading("Dashboard", size="2xl", color="white", font_family="sans-serif", margin_bottom="2em"),
-        rx.vstack(
-            # Sección de Repositorios
+        rx.hstack(
+            # Sección de Repositorios (Izquierda)
             rx.vstack(
-                rx.heading("Añadir Repositorio", size="lg", color="white", font_family="sans-serif", margin_bottom="1em"),
+                rx.heading("Añadir Repositorio", size="lg", color="white", font_family="sans-serif", margin_bottom="1em", align_self="flex-start"),
                 rx.form(
                     rx.vstack(
+                        rx.vstack(
+                            rx.text("Título del repositorio", color="white", font_family="sans-serif"),
+                            rx.input(
+                                id="repository_title",
+                                type="text",
+                                color="white",
+                                background_color="#2d2d2d",
+                                border="1px solid #444",
+                                border_radius="0.5em",
+                                padding="0.5em",
+                                width="100%",
+                                _hover={"border_color": "#666"},
+                                _focus={"border_color": "#888", "box_shadow": "0 0 0 1px #888"}
+                            ),
+                            spacing="0.5em",
+                            width="100%",
+                            margin_bottom="1em"
+                        ),
                         rx.vstack(
                             rx.text("URL del repositorio", color="white", font_family="sans-serif"),
                             rx.input(
                                 id="repository_url",
+                                type="text",
+                                color="white",
+                                background_color="#2d2d2d",
+                                border="1px solid #444",
+                                border_radius="0.5em",
+                                padding="0.5em",
+                                width="100%",
+                                _hover={"border_color": "#666"},
+                                _focus={"border_color": "#888", "box_shadow": "0 0 0 1px #888"}
+                            ),
+                            spacing="0.5em",
+                            width="100%",
+                            margin_bottom="1em"
+                        ),
+                        rx.vstack(
+                            rx.text("URL de la imagen del repositorio", color="white", font_family="sans-serif"),
+                            rx.input(
+                                id="repository_image_url",
                                 type="text",
                                 color="white",
                                 background_color="#2d2d2d",
@@ -55,10 +91,10 @@ def dashboard_page() -> rx.Component:
                 background_color="#2d2d2d",
                 border_radius="lg",
                 width="100%",
-                margin_bottom="2em",
+                height="100%",
                 _hover={"transform": "translateY(-5px)", "transition": "all 0.3s ease"}
             ),
-            # Sección de Blog
+            # Sección de Blog (Derecha)
             rx.vstack(
                 rx.heading("Añadir Entrada de Blog", size="lg", color="white", font_family="sans-serif", margin_bottom="1em"),
                 rx.form(
@@ -138,13 +174,17 @@ def dashboard_page() -> rx.Component:
                 background_color="#2d2d2d",
                 border_radius="lg",
                 width="100%",
-                margin_bottom="2em",
+                height="100%",
                 _hover={"transform": "translateY(-5px)", "transition": "all 0.3s ease"}
             ),
-            spacing="2em",
+            spacing="4em",
             width="100%",
-            max_width="800px",
-            align_items="center"
+            max_width="1400px",
+            align_items="stretch",
+            flex_direction="row",
+            padding="2em",
+            display=["flex", "flex", "flex", "flex"],
+            flex_wrap="wrap"
         ),
         width="100%",
         min_height="100vh",
