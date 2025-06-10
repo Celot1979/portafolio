@@ -1,4 +1,4 @@
-"""Estado del dashboard."""
+"""Estado del dashboard. Buscando la forma de que solo se pueda acceder a esta página si el usuario está logeado."""
 
 import reflex as rx
 from sqlalchemy.orm import Session
