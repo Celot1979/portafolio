@@ -11,6 +11,7 @@ from portafolio.pages.dashboard import dashboard_page
 from portafolio.pages.add_repository import add_repository_page
 from portafolio.pages.add_blog_post import add_blog_post_page
 from portafolio.pages.proyectos import proyectos_page
+from portafolio.state.login_state import LoginState
 from portafolio.pages.blog import blog_page
 
 
@@ -132,7 +133,7 @@ app.add_page(index, route="/")
 app.add_page(quien_soy_page, route="/quien-soy")
 app.add_page(contacto_page, route="/contacto")
 app.add_page(login_page, route="/login")
-app.add_page(dashboard_page, route="/dashboard")
+app.add_page(dashboard_page, route="/dashboard", on_load=LoginState.check_auth_and_redirect)
 app.add_page(add_repository_page, route="/add-repository")
 app.add_page(add_blog_post_page, route="/add-blog-post")
 app.add_page(proyectos_page, route="/proyectos")
