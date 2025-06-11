@@ -1,56 +1,48 @@
 #!/bin/bash
 
-# IMPORTANTE: Este script DEBE ser ejecutado con 'source' para que los cambios de entorno
-# se apliquen a tu terminal actual. Ejemplo: source ./configurar_entorno.sh
+# Ruta al directorio base de tu proyecto
+PROJECT_ROOT="/Users/danielgil/Documents/portafolio_mio/portafolio"
 
-echo "--- Iniciando configuración de entorno ---"
+# Ruta al script de activación de tu entorno virtual
+VENV_ACTIVATE_SCRIPT="${PROJECT_ROOT}/trabajo/bin/activate"
 
-# 1. Intentar desactivar cualquier entorno de Conda activo en el shell actual
-echo "Intentando desactivar cualquier entorno de Conda activo..."
-
-# Primero, verificamos si 'conda' está disponible como comando en este shell
-if command -v conda &> /dev/null; then
-    # Si 'conda' está disponible, verificamos si hay un entorno activo ($CONDA_PREFIX)
-    if [[ -n "$CONDA_PREFIX" ]]; then
-        conda deactivate
-        echo "Entorno de Conda desactivado."
-    else
-        echo "No hay un entorno de Conda activo para desactivar."
-    fi
+# 1. Activar el entorno virtual
+echo "Activando entorno virtual..."
+if [ -f "$VENV_ACTIVATE_SCRIPT" ]; then
+    source "$VENV_ACTIVATE_SCRIPT"
+    echo "Entorno virtual 'trabajo' activado."
 else
-    echo "El comando 'conda' no se encontró o no está inicializado en este shell."
-    echo "Asegúrate de haber ejecutado 'conda init <TU_SHELL>' y reiniciado tu terminal."
-    # No es un error crítico si no hay conda, el script puede continuar si es posible.
+    echo "Error: El script de activación del entorno virtual no se encontró en: $VENV_ACTIVATE_SCRIPT"
+    echo "Por favor, verifica la ruta o asegúrate de que el entorno virtual 'trabajo' existe."
+    exit 1 # Salir con error
 fi
 
-# 2. Ir a la ruta específica y ejecutar 'source ./activate'
-# Define la ruta a tu directorio 'bin'
-TARGET_DIR="/Users/danielgil/Documents/portafolio_mio/portafolio/trabajo/bin"
-
-echo "Cambiando al directorio: $TARGET_DIR"
-
-# Verifica si el directorio existe
-if [ ! -d "$TARGET_DIR" ]; then
-    echo "Error: El directorio '$TARGET_DIR' no existe. No se puede continuar."
-    return 1 # Devuelve un código de error y sale del script (importante para 'source')
-fi
-
-# Cambia al directorio; si falla, imprime un error y sale
-cd "$TARGET_DIR" || { echo "Error: No se pudo cambiar al directorio '$TARGET_DIR'."; return 1; }
-
-echo "Ejecutando source ./activate en $TARGET_DIR..."
-
-# Verifica si el archivo 'activate' existe en el directorio actual
-if [ -f "./activate" ]; then
-    source "./activate" # ¡Este es el comando clave que activa el entorno en tu terminal!
-    echo "Comando source ./activate ejecutado exitosamente."
+# 2. Navegar al directorio del proyecto
+echo "Navegando a la ruta del proyecto: $PROJECT_ROOT"
+if [ -d "$PROJECT_ROOT" ]; then
+    cd "$PROJECT_ROOT"
+    echo "¡Listo! Estás en la carpeta del proyecto."
 else
-    echo "Error: El archivo './activate' no se encontró en el directorio '$TARGET_DIR'."
-    return 1 # Devuelve un código de error y sale
+    echo "Error: El directorio del proyecto no se encontró en: $PROJECT_ROOT"
+    exit 1 # Salir con error
 fi
 
-echo "--- Configuración de entorno finalizada ---"
+# 3. Preguntar si se quiere ejecutar reflex run (Lógica Mejorada)
+# Usamos 'echo' para el prompt y 'read' sin opciones problemáticas.
+echo -n "¿Quieres ejecutar el comando 'reflex run' ahora? (s/n): "
+read REPLY
 
-# Si necesitas ejecutar algún script de Python DESPUÉS de que el entorno esté activado
-# en tu terminal, puedes añadirlo aquí. Por ejemplo:
-# python /ruta/a/tu_script_principal.py
+echo # Imprime una nueva línea para una mejor presentación
+
+# La comprobación [[ $REPLY =~ ^[Ss]$ ]] es específica de Bash/Zsh.
+# Una alternativa más universal es [ "$REPLY" = "s" ] || [ "$REPLY" = "S" ]
+if [[ "$REPLY" == "s" || "$REPLY" == "S" ]]
+then
+    echo "Ejecutando 'reflex run'..."
+    reflex run
+else
+    echo "No se ejecutó 'reflex run'. Puedes hacerlo manualmente cuando quieras."
+fi
+
+# El script terminará aquí, dejándote en la terminal dentro de la carpeta del proyecto
+# con el entorno virtual activado, independientemente de si elegiste ejecutar 'reflex run'.
