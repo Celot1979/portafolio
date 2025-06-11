@@ -29,13 +29,13 @@ def contacto_page() -> rx.Component:
                         _hover={"background_color": "#eee", "transform": "translateY(-2px)", "transition": "all 0.3s ease"}
                     ),
                     rx.link(
-                        "LinkedIn",
-                        href="https://linkedin.com/in/tu-perfil",
+                        "Telegram",
+                        href="https://t.me/Celot1979",
                         color="white",
-                        background_color="#2d2d2d",
+                        background_color="#0088cc", # Color de Telegram
                         padding="0.5em 1em",
                         border_radius="0.5em",
-                        _hover={"background_color": "#3d3d3d", "transform": "translateY(-2px)", "transition": "all 0.3s ease"}
+                        _hover={"background_color": "#007bb5", "transform": "translateY(-2px)", "transition": "all 0.3s ease"}
                     ),
                     spacing="1em"
                 ),
