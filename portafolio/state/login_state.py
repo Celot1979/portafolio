@@ -27,3 +27,8 @@ class LoginState(rx.State):
         if not self.is_authenticated:
             return rx.redirect("/login")
         return None
+
+    def logout(self):
+        """Cierra la sesión del usuario."""
+        self.is_authenticated = False
+        return rx.redirect("/")

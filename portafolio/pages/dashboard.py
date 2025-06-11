@@ -12,10 +12,20 @@ def dashboard_page() -> rx.Component:
     db = next(get_db())
     repositories = db.query(Repository).all()
     blog_posts = db.query(BlogPost).all()
-    db.close()
-    
+    db.close() 
+
     return rx.vstack(
         menu(),
+        rx.hstack(
+            rx.spacer(),
+            rx.button(
+                "Cerrar sesión",
+                on_click=LoginState.logout,
+                color_scheme="red",
+                _hover={"background_color": "#cc0000"},
+            ),
+            width="100%",
+        ),
         rx.heading("Dashboard", size="2xl", color="white", font_family="sans-serif", margin_bottom="2em"),
         rx.hstack(
             # Sección de Repositorios (Izquierda)
