@@ -9,11 +9,6 @@ from portafolio.database import get_db
 
 def dashboard_page() -> rx.Component:
     """Renderiza la página del dashboard."""
-    db = next(get_db())
-    repositories = db.query(Repository).all()
-    blog_posts = db.query(BlogPost).all()
-    db.close() 
-
     return rx.vstack(
         menu(),
         rx.hstack(
@@ -154,7 +149,6 @@ def dashboard_page() -> rx.Component:
                             border_radius="0.5em",
                             padding="0.5em",
                             width="100%",
-                            min_height="200px",
                             _hover={"border_color": "#666"},
                             _focus={"border_color": "#888", "box_shadow": "0 0 0 1px #888"},
                             value=DashboardState.content,
@@ -256,7 +250,7 @@ def dashboard_page() -> rx.Component:
                     background_color="#2d2d2d",
                     border_radius="lg",
                     _hover={"transform": "translateY(-5px)", "transition": "all 0.3s ease"}
-                ) for repo in repositories
+                ) for repo in DashboardState.repositories
             ],
             spacing="1em",
             width="100%",
@@ -299,7 +293,7 @@ def dashboard_page() -> rx.Component:
                     background_color="#2d2d2d",
                     border_radius="lg",
                     _hover={"transform": "translateY(-5px)", "transition": "all 0.3s ease"}
-                ) for post in blog_posts
+                ) for post in DashboardState.blog_posts
             ],
             spacing="1em",
             width="100%",
@@ -311,5 +305,8 @@ def dashboard_page() -> rx.Component:
         min_height="100vh",
         background_color="#1a1a1a",
         padding="2em",
-        spacing="2em"
+        spacing="2em",
+        on_mount=DashboardState.on_mount,
+        on_unmount=DashboardState.on_unmount,
+        on_event=DashboardState.handle_event
     ) 
