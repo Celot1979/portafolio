@@ -1,7 +1,7 @@
 """Script para inicializar la base de datos."""
 
-from .database import engine, SessionLocal
-from .models import Base, User
+from portafolio.database import engine, SessionLocal
+from portafolio.models import Base, User
 
 def init_db():
     """Inicializa la base de datos creando todas las tablas y un usuario administrador."""

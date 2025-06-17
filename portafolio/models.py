@@ -1,8 +1,28 @@
 """Modelos de la base de datos."""
 
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, Text, DateTime
+from sqlalchemy import Column, Integer, String, Text, DateTime, Boolean
+from werkzeug.security import generate_password_hash, check_password_hash
 from .database import Base
+
+class User(Base):
+    """Modelo para los usuarios."""
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String(255), unique=True, nullable=False)
+    password_hash = Column(String(255), nullable=False)
+    is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    def set_password(self, password: str):
+        """Establece la contraseña del usuario."""
+        self.password_hash = generate_password_hash(password)
+
+    def check_password(self, password: str) -> bool:
+        """Verifica la contraseña del usuario."""
+        return check_password_hash(self.password_hash, password)
 
 class Repository(Base):
     """Modelo para los repositorios."""
