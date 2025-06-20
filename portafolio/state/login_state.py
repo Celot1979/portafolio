@@ -18,7 +18,7 @@ class LoginState(rx.State):
             self.error_message = "Por favor, completa todos los campos."
             return
         
-        if self.username == "dani" and self.password == "Will€_":
+        if self.username == "dani" and self.password == "Will2024_":
             self.is_authenticated = True
             self.error_message = ""
             return rx.redirect("/content-manager")

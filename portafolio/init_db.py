@@ -17,7 +17,7 @@ def init_db():
         if not admin:
             # Crear usuario administrador
             admin = User(username="dani")
-            admin.set_password("Will€_")  # Cambiar esto en producción
+            admin.set_password("Will2024_")  # Cambiar esto en producción
             db.add(admin)
             db.commit()
             print("Usuario administrador creado correctamente")
