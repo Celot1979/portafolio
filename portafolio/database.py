@@ -5,9 +5,13 @@ import reflex as rx
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+import dotenv
 
-# Configuración de la base de datos local
-DATABASE_URL = "postgresql://localhost:5432/portafolio"
+dotenv.load_dotenv()
+
+# Configuración de la base de datos
+DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://neondb_owner:npg_2MGHEULOJt0g@ep-silent-cloud-ab3kdk6l-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require")
+print("USANDO BASE DE DATOS:", DATABASE_URL)
 
 # Crear el motor de la base de datos
 engine = create_engine(DATABASE_URL)

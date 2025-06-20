@@ -5,17 +5,34 @@ import psycopg2
 from sqlalchemy import inspect
 from .database import engine, SessionLocal
 from .models import Base, User, Repository, BlogPost
+import os
+from urllib.parse import urlparse, parse_qs
 
 def check_database_connection():
-    """Verifica la conexión a la base de datos."""
+    """Verifica la conexión a la base de datos usando la misma URL que SQLAlchemy."""
+    DATABASE_URL = os.getenv("DATABASE_URL")
+    if not DATABASE_URL:
+        print("❌ No se ha definido DATABASE_URL.")
+        return False
+    # Parsear la URL
+    result = urlparse(DATABASE_URL)
+    username = result.username
+    password = result.password
+    database = result.path[1:]
+    hostname = result.hostname
+    port = result.port or 5432
+    sslmode = parse_qs(result.query).get("sslmode", [None])[0]
+    conn_params = {
+        "dbname": database,
+        "user": username,
+        "password": password,
+        "host": hostname,
+        "port": port
+    }
+    if sslmode:
+        conn_params["sslmode"] = sslmode
     try:
-        conn = psycopg2.connect(
-            dbname="portafolio",
-            user="postgres",
-            password="postgres",
-            host="localhost",
-            port="5432"
-        )
+        conn = psycopg2.connect(**conn_params)
         conn.close()
         print("✅ Conexión a la base de datos exitosa")
         return True
@@ -41,9 +58,16 @@ def check_tables():
 
 def check_admin_user():
     """Verifica que exista el usuario administrador."""
+    import inspect
+    print(f"models.py usado: {inspect.getfile(User)}")
+    print(f"Nombre de la tabla User: {User.__tablename__}")
     db = SessionLocal()
     try:
-        admin = db.query(User).filter(User.username == "admin").first()
+        usuarios = db.query(User).all()
+        print("Usuarios encontrados en la tabla users:")
+        for usuario in usuarios:
+            print(f"ID: {usuario.id}, Username: {usuario.username}")
+        admin = db.query(User).filter(User.username == "dani").first()
         if admin:
             print("✅ Usuario administrador existe")
             return True

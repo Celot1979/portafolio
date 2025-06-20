@@ -14,6 +14,8 @@ from portafolio.pages.content.new_repo import new_repo_page
 from portafolio.state.login_state import LoginState
 from portafolio.components.menu import menu
 
+DATABASE_URL = "postgresql://postgres:Willtrabajo€_@db.fshpwnmynyucawuyiybb.supabase.co:5432/postgres"
+
 def index() -> rx.Component:
     """Renderiza la página principal con un diseño visual moderno y shapes decorativos."""
     # SVG decorativo superior derecho (onda y blob, escala de grises, más grande)
