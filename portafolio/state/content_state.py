@@ -31,6 +31,9 @@ class ContentState(rx.State):
     # Estado de edición para repositorios
     repo_edit_id: Optional[int] = None
     
+    # Estado para confirmación de borrado de repositorios
+    repo_confirm_delete_id: Optional[int] = None
+    
     # Métodos set_ para actualizar los atributos
     def set_blog_title(self, title: str):
         self.blog_title = title
@@ -283,6 +286,19 @@ class ContentState(rx.State):
             self.repo_message = f"Error al editar el repositorio: {str(e)}"
         finally:
             db.close()
+
+    def confirm_delete_repository(self, repo_id: int):
+        """Marca un repositorio para confirmación de borrado."""
+        self.repo_confirm_delete_id = repo_id
+
+    def cancel_delete_repository(self):
+        """Cancela la confirmación de borrado."""
+        self.repo_confirm_delete_id = None
+
+    def delete_and_reset_repository(self, repo_id: int):
+        """Borra el repositorio y limpia la confirmación."""
+        self.delete_repository(repo_id)
+        self.repo_confirm_delete_id = None
 
     @classmethod
     def submit_blog_post(cls, state):
