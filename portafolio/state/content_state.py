@@ -300,10 +300,8 @@ class ContentState(rx.State):
         self.delete_repository(repo_id)
         self.repo_confirm_delete_id = None
 
-    @classmethod
-    def submit_blog_post(cls, state):
-        state.create_blog_post()
-
-    @classmethod
-    def submit_repository(cls, state):
-        state.create_repository() 
+    def submit_repository(self, form_data=None):
+        if self.repo_edit_id is not None:
+            self.save_edit_repo()
+        else:
+            self.create_repository() 

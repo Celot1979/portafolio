@@ -160,11 +160,7 @@ def new_repo_page():
                             spacing="4",
                             width="100%"
                         ),
-                        on_submit=rx.cond(
-                            ContentState.repo_edit_id is not None,
-                            ContentState.save_edit_repo,
-                            ContentState.create_repository
-                        ),
+                        on_submit=ContentState.submit_repository,
                         width="100%"
                     ),
                     rx.text(ContentState.repo_message, color="green", mt="2"),
