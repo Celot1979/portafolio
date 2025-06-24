@@ -34,6 +34,9 @@ class ContentState(rx.State):
     # Estado para confirmación de borrado de repositorios
     repo_confirm_delete_id: Optional[int] = None
     
+    # Estado para confirmación de borrado de blogs
+    blog_confirm_delete_id: Optional[int] = None
+    
     # Métodos set_ para actualizar los atributos
     def set_blog_title(self, title: str):
         self.blog_title = title
@@ -304,4 +307,17 @@ class ContentState(rx.State):
         if self.repo_edit_id is not None:
             self.save_edit_repo()
         else:
-            self.create_repository() 
+            self.create_repository()
+
+    def confirm_delete_blog(self, post_id: int):
+        """Establece el ID del blog a borrar."""
+        self.blog_confirm_delete_id = post_id
+
+    def cancel_delete_blog(self):
+        """Cancela la confirmación de borrado de blog."""
+        self.blog_confirm_delete_id = None
+
+    def delete_and_reset_blog(self, post_id: int):
+        """Elimina el blog y resetea el estado de confirmación."""
+        self.delete_blog_post(post_id)
+        self.cancel_delete_blog() 

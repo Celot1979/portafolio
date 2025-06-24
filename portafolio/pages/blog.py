@@ -15,12 +15,11 @@ def render_post(post):
             width="100%",
             word_wrap="break-word"
         ),
-        rx.text(
+        rx.markdown(
             post.get("content", ""),
             color="white",
             font_family="sans-serif",
             width="100%",
-            word_wrap="break-word",
             font_size=["0.9em", "1em", "1em"]
         ),
         rx.cond(
