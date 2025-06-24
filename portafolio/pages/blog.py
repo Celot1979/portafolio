@@ -6,21 +6,37 @@ from portafolio.state.content_state import ContentState
 
 def render_post(post):
     return rx.vstack(
-        rx.heading(post.get("title", ""), size="4", color="white", font_family="sans-serif"),
-        rx.text(post.get("content", ""), color="white", font_family="sans-serif"),
+        rx.heading(
+            post.get("title", ""),
+            as_="h2",
+            font_size=["1.5em", "1.75em", "2em"],
+            color="white",
+            font_family="sans-serif",
+            width="100%",
+            word_wrap="break-word"
+        ),
+        rx.text(
+            post.get("content", ""),
+            color="white",
+            font_family="sans-serif",
+            width="100%",
+            word_wrap="break-word",
+            font_size=["0.9em", "1em", "1em"]
+        ),
         rx.cond(
             post.get("image_url"),
             rx.image(
                 src=post.get("image_url", ""),
                 alt=post.get("title", ""),
                 width="100%",
+                height="auto",
                 border_radius="lg"
             )
         ),
-        spacing="1",
+        spacing="4",
         width="100%",
-        max_width="600px",
-        padding="2em",
+        padding_y=["4", "6"],
+        padding_x=["4", "5"],
         background_color="#2d2d2d",
         border_radius="lg",
         _hover={"transform": "translateY(-5px)", "transition": "all 0.3s ease"}

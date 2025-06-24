@@ -14,7 +14,13 @@ DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://neondb_owner:npg_2MGHEULO
 print("USANDO BASE DE DATOS:", DATABASE_URL)
 
 # Crear el motor de la base de datos
-engine = create_engine(DATABASE_URL)
+engine = create_engine(
+    DATABASE_URL,
+    pool_size=5,         # Número máximo de conexiones en el pool
+    max_overflow=2,      # Conexiones adicionales permitidas
+    pool_timeout=30,     # Tiempo máximo de espera para obtener una conexión (segundos)
+    pool_recycle=1800    # Reciclar conexiones cada 30 minutos
+)
 
 # Crear la sesión
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
