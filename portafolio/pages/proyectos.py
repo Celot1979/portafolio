@@ -17,20 +17,23 @@ def proyectos_page() -> rx.Component:
                         rx.foreach(
                             ContentState.repositories,
                             lambda repo: rx.box(
-                                rx.heading(repo["title"], size="4", color="white"),
-                                rx.text(repo["url"], color="gray"),
+                                rx.heading(repo["title"], size="4", color="white", word_wrap="break-word"),
+                                rx.text(repo["url"], color="gray", word_wrap="break-word"),
                                 rx.cond(
                                     repo.get("image_url"),
-                                    rx.image(src=repo["image_url"], alt=repo["title"], width="200px", border_radius="md"),
+                                    rx.image(src=repo["image_url"], alt=repo["title"], width="100%", height="auto", border_radius="md"),
                                 ),
                                 background_color="#222",
                                 border_radius="md",
                                 p="4",
-                                mb="8",
                             )
                         ),
-                        columns="3",
-                        spacing="8",
+                        columns={
+                            "base": "1",
+                            "sm": "2",
+                            "md": "3"
+                        },
+                        spacing="4",
                         width="100%",
                         max_width=["100%", "100%", "1200px"],
                         margin_x="auto"
