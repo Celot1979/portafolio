@@ -69,7 +69,7 @@ class ContentState(rx.State):
             # Convertir los objetos a diccionarios
             self.blog_posts = [
                 {
-                    "id": post.id,
+                    "id": int(post.id) if post.id is not None else None,
                     "title": post.title,
                     "content": post.content,
                     "image_url": post.image_url,
@@ -109,7 +109,7 @@ class ContentState(rx.State):
             db.refresh(new_post)
             
             self.blog_posts.append({
-                "id": new_post.id,
+                "id": int(new_post.id) if new_post.id is not None else None,
                 "title": new_post.title,
                 "content": new_post.content,
                 "image_url": new_post.image_url,
@@ -120,6 +120,8 @@ class ContentState(rx.State):
             self.blog_content = ""
             self.blog_image_url = ""
             self.blog_message = "Entrada de blog añadida correctamente"
+            # Recargar la lista completa para asegurar sincronización
+            self.load_content()
             
         except Exception as e:
             self.blog_message = f"Error al añadir la entrada: {str(e)}"

@@ -3,42 +3,100 @@
 import reflex as rx
 from portafolio.components.menu import menu
 from portafolio.state.content_state import ContentState
+from portafolio.state.blog_page_state import BlogPageState
 
-def render_post(post):
-    return rx.vstack(
-        rx.heading(
-            post.get("title", ""),
-            as_="h2",
-            font_size=["1.5em", "1.75em", "2em"],
-            color="white",
-            font_family="sans-serif",
-            width="100%",
-            word_wrap="break-word"
-        ),
-        rx.markdown(
-            post.get("content", ""),
-            color="white",
-            font_family="sans-serif",
-            width="100%",
-            font_size=["0.9em", "1em", "1em"]
-        ),
-        rx.cond(
-            post.get("image_url"),
-            rx.image(
-                src=post.get("image_url", ""),
-                alt=post.get("title", ""),
+def generar_resumen(contenido, longitud=200):
+    if not isinstance(contenido, str):
+        return ""
+    if len(contenido) > longitud:
+        return contenido[:longitud] + "..."
+    return contenido
+
+def render_blog_card(post):
+    title = post.get("title", "Sin título")
+    content = post.get("content", "")
+    image_url = post.get("image_url", None)
+    post_id = post.get("id")
+    card = rx.card(
+        rx.vstack(
+            rx.heading(
+                title,
+                as_="h3",
+                font_size=["1.2em", "1.3em", "1.5em"],
+                color="white",
+                font_family="sans-serif",
                 width="100%",
-                height="auto",
-                border_radius="lg"
-            )
+                word_wrap="break-word"
+            ),
+            rx.cond(
+                image_url,
+                rx.image(
+                    src=image_url,
+                    alt=title,
+                    width="100%",
+                    height="180px",
+                    object_fit="cover",
+                    border_radius="md",
+                    margin_bottom="0.5em"
+                )
+            ),
+            rx.text(
+                generar_resumen(content),
+                color="#e0e0e0",
+                font_size="1em",
+                margin_bottom="0.5em"
+            ),
+            spacing="2",
+            align_items="flex-start",
+            width="100%"
         ),
-        spacing="4",
+        background_color="#232526",
+        border_radius="md",
+        box_shadow="0 2px 8px rgba(0,0,0,0.15)",
+        padding="1.5em",
+        margin_bottom="1.5em",
+        _hover={"box_shadow": "0 4px 16px #00e0ff44", "transform": "translateY(-4px)", "transition": "all 0.2s"},
+        on_click=lambda: BlogPageState.open_modal(post)
+    )
+    return card
+
+def render_post_detail():
+    post = BlogPageState.selected_post
+    return rx.box(
+        rx.vstack(
+            rx.heading(post["title"], as_="h1", color="white", font_size=["2em", "2.5em", "3em"], margin_bottom="0.5em"),
+            rx.cond(
+                post["image_url"],
+                rx.image(
+                    src=post["image_url"],
+                    alt=post["title"],
+                    width="100%",
+                    max_height="350px",
+                    object_fit="cover",
+                    border_radius="md",
+                    margin_bottom="1em"
+                )
+            ),
+            rx.markdown(
+                post["content"],
+                color="white",
+                font_size="1.1em",
+                width="100%",
+                margin_bottom="1em"
+            ),
+            rx.button("Cerrar detalle", on_click=BlogPageState.close_modal, margin_top="1em"),
+            spacing="4",
+            align_items="flex-start",
+            width="100%"
+        ),
+        background="#232526",
+        border_radius="xl",
+        box_shadow="0 8px 32px rgba(0,0,0,0.35)",
+        p="8",
+        max_width="700px",
         width="100%",
-        padding_y=["4", "6"],
-        padding_x=["4", "5"],
-        background_color="#2d2d2d",
-        border_radius="lg",
-        _hover={"transform": "translateY(-5px)", "transition": "all 0.3s ease"}
+        mt="4",
+        margin_x="auto"
     )
 
 def blog_page() -> rx.Component:
@@ -46,27 +104,24 @@ def blog_page() -> rx.Component:
         menu(),
         rx.center(
             rx.vstack(
-                rx.heading("Blog", size="6", color="white", font_family="sans-serif", margin_bottom=["1em", "2em"]),
+                rx.heading("Blog", size="6", color="white", margin_bottom=["1em", "2em"]),
                 rx.cond(
                     ContentState.blog_posts,
-                    rx.foreach(ContentState.blog_posts, render_post),
-                    rx.text("No hay posts guardados.", color="white")
+                    rx.foreach(ContentState.blog_posts, render_blog_card),
+                    rx.text("No hay entradas de blog.", color="white")
                 ),
+                # Detalle del post seleccionado debajo de la lista
+                rx.cond(~(BlogPageState.selected_post.is_none()), render_post_detail()),
                 width="100%",
                 max_width=["100%", "100%", "900px"],
-                margin_x="auto",
-                spacing="2",
-                align_items="center",
-                justify_content="center",
+                align_items="center"
             ),
             width="100%",
             min_height="calc(100vh - 64px)",
             align_items="center",
-            justify_content="center",
+            justify_content="center"
         ),
         width="100%",
         min_height="100vh",
-        background_color="#1a1a1a",
-        padding=["1em", "2em"],
-        on_mount=ContentState.load_content
+        background_color="#1a1a1a"
     )
