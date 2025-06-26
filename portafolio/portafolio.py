@@ -13,6 +13,7 @@ from portafolio.pages.content.new_blog import new_blog_page
 from portafolio.pages.content.new_repo import new_repo_page
 from portafolio.state.login_state import LoginState
 from portafolio.components.menu import menu
+from portafolio.pages.blog import blog_detail_page
 
 # DATABASE_URL = "postgresql://postgres:Willtrabajo€_@db.fshpwnmynyucawuyiybb.supabase.co:5432/postgres"
 
@@ -181,4 +182,6 @@ app.add_page(content_manager_page, route="/content-manager", on_load=LoginState.
 app.add_page(new_blog_page, route="/content/new-blog", on_load=LoginState.check_auth_and_redirect)
 app.add_page(new_repo_page, route="/content/new-repo", on_load=LoginState.check_auth_and_redirect)
 app.add_page(proyectos_page, route="/proyectos")
-app.add_page(blog_page, route="/blog") 
+# Las páginas de blog ahora se registran automáticamente con @rx.page
+# app.add_page(blog_page, route="/blog")
+# app.add_page(blog_detail_page, route="/blog/[post_id]") 

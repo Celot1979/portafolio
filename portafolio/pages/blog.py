@@ -4,6 +4,8 @@ import reflex as rx
 from portafolio.components.menu import menu
 from portafolio.state.content_state import ContentState
 from portafolio.state.blog_page_state import BlogPageState
+from portafolio.models import BlogPost
+from portafolio.database import get_db
 
 def generar_resumen(contenido, longitud=200):
     if not isinstance(contenido, str):
@@ -46,6 +48,15 @@ def render_blog_card(post):
                 font_size="1em",
                 margin_bottom="0.5em"
             ),
+            rx.link(
+                rx.button(
+                    "Leer más",
+                    color_scheme="blue",
+                    variant="outline",
+                    width="100%"
+                ),
+                href=f"/blog/{post_id}"
+            ),
             spacing="2",
             align_items="flex-start",
             width="100%"
@@ -56,12 +67,37 @@ def render_blog_card(post):
         padding="1.5em",
         margin_bottom="1.5em",
         _hover={"box_shadow": "0 4px 16px #00e0ff44", "transform": "translateY(-4px)", "transition": "all 0.2s"},
-        on_click=lambda: BlogPageState.open_modal(post)
     )
     return card
 
-def render_post_detail():
-    post = BlogPageState.selected_post
+@rx.page(route="/blog", on_load=ContentState.load_content)
+def blog_page() -> rx.Component:
+    return rx.vstack(
+        menu(),
+        rx.center(
+            rx.vstack(
+                rx.heading("Blog", size="6", color="white", margin_bottom=["1em", "2em"]),
+                rx.cond(
+                    ContentState.blog_posts,
+                    rx.foreach(ContentState.blog_posts, render_blog_card),
+                    rx.text("No hay entradas de blog.", color="white")
+                ),
+                width="100%",
+                max_width=["100%", "100%", "900px"],
+                align_items="center"
+            ),
+            width="100%",
+            min_height="calc(100vh - 64px)",
+            align_items="center",
+            justify_content="center"
+        ),
+        width="100%",
+        min_height="100vh",
+        background_color="#1a1a1a"
+    )
+
+def render_full_post(post: dict):
+    """Renderiza el contenido completo de un post."""
     return rx.box(
         rx.vstack(
             rx.heading(post["title"], as_="h1", color="white", font_size=["2em", "2.5em", "3em"], margin_bottom="0.5em"),
@@ -84,7 +120,10 @@ def render_post_detail():
                 width="100%",
                 margin_bottom="1em"
             ),
-            rx.button("Cerrar detalle", on_click=BlogPageState.close_modal, margin_top="1em"),
+            rx.link(
+                rx.button("Volver al blog", color_scheme="gray", variant="outline"),
+                href="/blog"
+            ),
             spacing="4",
             align_items="flex-start",
             width="100%"
@@ -99,22 +138,23 @@ def render_post_detail():
         margin_x="auto"
     )
 
-def blog_page() -> rx.Component:
+@rx.page(route="/blog/[post_id]", on_load=ContentState.load_content)
+def blog_detail_page():
     return rx.vstack(
         menu(),
         rx.center(
-            rx.vstack(
-                rx.heading("Blog", size="6", color="white", margin_bottom=["1em", "2em"]),
+            rx.cond(
+                ContentState.content_loaded,
+                # Contenido cargado, ahora decide si mostrar post o error
                 rx.cond(
-                    ContentState.blog_posts,
-                    rx.foreach(ContentState.blog_posts, render_blog_card),
-                    rx.text("No hay entradas de blog.", color="white")
+                    ContentState.selected_post_from_list.length() > 0,
+                    # Post encontrado
+                    render_full_post(ContentState.selected_post_from_list[0]),
+                    # Post no encontrado
+                    rx.text("Entrada de blog no encontrada.", color="red", font_size="1.3em")
                 ),
-                # Detalle del post seleccionado debajo de la lista
-                rx.cond(~(BlogPageState.selected_post.is_none()), render_post_detail()),
-                width="100%",
-                max_width=["100%", "100%", "900px"],
-                align_items="center"
+                # Contenido aún no cargado
+                rx.text("Cargando...", color="white", font_size="1.3em")
             ),
             width="100%",
             min_height="calc(100vh - 64px)",

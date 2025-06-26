@@ -8,6 +8,8 @@ from ..database import get_db
 class ContentState(rx.State):
     """Estado para manejar el contenido del portafolio."""
     
+    content_loaded: bool = False
+    
     # Campos para blogs
     blog_title: str = ""
     blog_content: str = ""
@@ -36,6 +38,14 @@ class ContentState(rx.State):
     
     # Estado para confirmación de borrado de blogs
     blog_confirm_delete_id: Optional[int] = None
+    
+    @rx.var
+    def selected_post_from_list(self) -> list[dict]:
+        """Filtra la lista de posts para encontrar el que coincide con el post_id de la URL."""
+        post_id = self.router.page.params.get("post_id", "")
+        if not self.blog_posts or not post_id:
+            return []
+        return [p for p in self.blog_posts if str(p.get("id")) == post_id]
     
     # Métodos set_ para actualizar los atributos
     def set_blog_title(self, title: str):
@@ -89,6 +99,7 @@ class ContentState(rx.State):
         except Exception as e:
             print(f"Error al cargar el contenido: {str(e)}")
         finally:
+            self.content_loaded = True
             db.close()
     
     def create_blog_post(self):
