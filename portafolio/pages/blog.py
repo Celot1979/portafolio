@@ -79,12 +79,26 @@ def blog_page() -> rx.Component:
                 rx.heading("Blog", size="6", color="white", margin_bottom=["1em", "2em"]),
                 rx.cond(
                     ContentState.blog_posts,
-                    rx.foreach(ContentState.blog_posts, render_blog_card),
+                    rx.grid(
+                        rx.foreach(ContentState.blog_posts, render_blog_card),
+                        columns={
+                            "base": "1",
+                            "sm": "2",
+                            "md": "3"
+                        },
+                        spacing="4",
+                        width="100%",
+                        max_width=["100%", "100%", "1200px"],
+                        margin_x="auto"
+                    ),
                     rx.text("No hay entradas de blog.", color="white")
                 ),
                 width="100%",
-                max_width=["100%", "100%", "900px"],
-                align_items="center"
+                max_width=["100%", "100%", "1200px"],
+                align_items="center",
+                justify_content="center",
+                spacing="2",
+                padding=["1em", "2em"]
             ),
             width="100%",
             min_height="calc(100vh - 64px)",
