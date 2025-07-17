@@ -12,36 +12,40 @@ def proyectos_page() -> rx.Component:
             rx.vstack(
                 rx.heading("Proyectos", size="6", color="white", font_family="sans-serif", margin_bottom=["1em", "2em"]),
                 rx.cond(
-                    ContentState.repositories,
-                    rx.grid(
-                        rx.foreach(
-                            ContentState.repositories,
-                            lambda repo: rx.box(
-                                rx.heading(repo["title"], size="4", color="white", word_wrap="break-word"),
-                                rx.text(repo["url"], color="gray", word_wrap="break-word"),
-                                rx.cond(
-                                    repo.get("image_url"),
-                                    rx.image(src=repo["image_url"], alt=repo["title"], width="100%", height="auto", border_radius="md"),
-                                ),
-                                background_color="#222",
-                                border_radius="md",
-                                p="4",
-                            )
+                    ~ContentState.content_loaded,
+                    rx.box(),  # No mostrar nada mientras carga
+                    rx.cond(
+                        ContentState.repositories,
+                        rx.grid(
+                            rx.foreach(
+                                ContentState.repositories,
+                                lambda repo: rx.box(
+                                    rx.heading(repo["title"], size="4", color="white", word_wrap="break-word"),
+                                    rx.text(repo["url"], color="gray", word_wrap="break-word"),
+                                    rx.cond(
+                                        repo.get("image_url"),
+                                        rx.image(src=repo["image_url"], alt=repo["title"], width="100%", height="auto", border_radius="md"),
+                                    ),
+                                    background_color="#222",
+                                    border_radius="md",
+                                    p="4",
+                                )
+                            ),
+                            columns={
+                                "base": "1",
+                                "sm": "2",
+                                "md": "3"
+                            },
+                            spacing="4",
+                            width="100%",
+                            max_width=["100%", "100%", "1200px"],
+                            margin_x="auto"
                         ),
-                        columns={
-                            "base": "1",
-                            "sm": "2",
-                            "md": "3"
-                        },
-                        spacing="4",
-                        width="100%",
-                        max_width=["100%", "100%", "1200px"],
-                        margin_x="auto"
-                    ),
-                    rx.text("No hay proyectos guardados.", color="white")
+                        rx.text("No hay proyectos guardados.", color="white")
+                    )
                 ),
                 rx.cond(
-                    ~ContentState.repo_no_more,
+                    ~ContentState.repo_no_more & ContentState.content_loaded,
                     rx.button(
                         "Cargar más proyectos",
                         on_click=ContentState.load_more_repos,

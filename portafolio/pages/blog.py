@@ -79,23 +79,27 @@ def blog_page() -> rx.Component:
             rx.vstack(
                 rx.heading("Blog", size="6", color="white", margin_bottom=["1em", "2em"]),
                 rx.cond(
-                    ContentState.blog_posts,
-                    rx.grid(
-                        rx.foreach(ContentState.blog_posts, render_blog_card),
-                        columns={
-                            "base": "1",
-                            "sm": "2",
-                            "md": "3"
-                        },
-                        spacing="4",
-                        width="100%",
-                        max_width=["100%", "100%", "1200px"],
-                        margin_x="auto"
-                    ),
-                    rx.text("No hay entradas de blog.", color="white")
+                    ~ContentState.content_loaded,
+                    rx.box(),  # No mostrar nada mientras carga
+                    rx.cond(
+                        ContentState.blog_posts,
+                        rx.grid(
+                            rx.foreach(ContentState.blog_posts, render_blog_card),
+                            columns={
+                                "base": "1",
+                                "sm": "2",
+                                "md": "3"
+                            },
+                            spacing="4",
+                            width="100%",
+                            max_width=["100%", "100%", "1200px"],
+                            margin_x="auto"
+                        ),
+                        rx.text("No hay entradas de blog.", color="white")
+                    )
                 ),
                 rx.cond(
-                    ~ContentState.blog_no_more,
+                    ~ContentState.blog_no_more & ContentState.content_loaded,
                     rx.button(
                         "Cargar más entradas",
                         on_click=ContentState.load_more_blogs,
