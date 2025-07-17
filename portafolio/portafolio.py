@@ -185,3 +185,6 @@ app.add_page(proyectos_page, route="/proyectos")
 # Las páginas de blog ahora se registran automáticamente con @rx.page
 # app.add_page(blog_page, route="/blog")
 # app.add_page(blog_detail_page, route="/blog/[post_id]") 
+
+if __name__ == "__main__":
+    app.run() 
