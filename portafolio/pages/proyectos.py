@@ -15,12 +15,12 @@ def proyectos_page() -> rx.Component:
                     ~ContentState.content_loaded,
                     rx.box(),  # No mostrar nada mientras carga
                     rx.cond(
-                        ContentState.repositories,
-                        rx.grid(
-                            rx.foreach(
-                                ContentState.repositories,
-                                lambda repo: rx.box(
-                                    rx.heading(repo["title"], size="4", color="white", word_wrap="break-word"),
+                    ContentState.repositories,
+                    rx.grid(
+                        rx.foreach(
+                            ContentState.repositories,
+                            lambda repo: rx.box(
+                                rx.heading(repo["title"], size="4", color="white", word_wrap="break-word"),
                                     rx.text(repo.get("description", ""), color="#b0b0b0", font_size="1em", margin_bottom="0.5em"),
                                     rx.link(
                                         repo["url"],
@@ -31,26 +31,26 @@ def proyectos_page() -> rx.Component:
                                         _hover={"text_decoration": "underline"},
                                         margin_bottom="0.5em"
                                     ),
-                                    rx.cond(
-                                        repo.get("image_url"),
-                                        rx.image(src=repo["image_url"], alt=repo["title"], width="100%", height="auto", border_radius="md"),
-                                    ),
-                                    background_color="#222",
-                                    border_radius="md",
-                                    p="4",
-                                )
-                            ),
-                            columns={
-                                "base": "1",
-                                "sm": "2",
-                                "md": "3"
-                            },
-                            spacing="4",
-                            width="100%",
-                            max_width=["100%", "100%", "1200px"],
-                            margin_x="auto"
+                                rx.cond(
+                                    repo.get("image_url"),
+                                    rx.image(src=repo["image_url"], alt=repo["title"], width="100%", height="auto", border_radius="md"),
+                                ),
+                                background_color="#222",
+                                border_radius="md",
+                                p="4",
+                            )
                         ),
-                        rx.text("No hay proyectos guardados.", color="white")
+                        columns={
+                            "base": "1",
+                            "sm": "2",
+                            "md": "3"
+                        },
+                        spacing="4",
+                        width="100%",
+                        max_width=["100%", "100%", "1200px"],
+                        margin_x="auto"
+                    ),
+                    rx.text("No hay proyectos guardados.", color="white")
                     )
                 ),
                 rx.cond(

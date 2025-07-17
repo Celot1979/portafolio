@@ -82,20 +82,20 @@ def blog_page() -> rx.Component:
                     ~ContentState.content_loaded,
                     rx.box(),  # No mostrar nada mientras carga
                     rx.cond(
-                        ContentState.blog_posts,
-                        rx.grid(
-                            rx.foreach(ContentState.blog_posts, render_blog_card),
-                            columns={
-                                "base": "1",
-                                "sm": "2",
-                                "md": "3"
-                            },
-                            spacing="4",
-                            width="100%",
-                            max_width=["100%", "100%", "1200px"],
-                            margin_x="auto"
-                        ),
-                        rx.text("No hay entradas de blog.", color="white")
+                    ContentState.blog_posts,
+                    rx.grid(
+                        rx.foreach(ContentState.blog_posts, render_blog_card),
+                        columns={
+                            "base": "1",
+                            "sm": "2",
+                            "md": "3"
+                        },
+                        spacing="4",
+                        width="100%",
+                        max_width=["100%", "100%", "1200px"],
+                        margin_x="auto"
+                    ),
+                    rx.text("No hay entradas de blog.", color="white")
                     )
                 ),
                 rx.cond(

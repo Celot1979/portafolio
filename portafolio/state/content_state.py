@@ -93,15 +93,15 @@ class ContentState(rx.State):
                     .all()
                 )
                 nuevos_blogs = [
-                    {
-                        "id": int(post.id) if post.id is not None else None,
-                        "title": post.title,
-                        "image_url": post.image_url,
-                        "seo_description": post.seo_description,
+                {
+                    "id": int(post.id) if post.id is not None else None,
+                    "title": post.title,
+                    "image_url": post.image_url,
+                    "seo_description": post.seo_description,
                         "created_at": post.created_at.isoformat() if post.created_at else None,
-                    }
-                    for post in blog_posts
-                ]
+                }
+                for post in blog_posts
+            ]
                 if append:
                     self.blog_posts += nuevos_blogs
                 else:
@@ -116,16 +116,16 @@ class ContentState(rx.State):
                     .all()
                 )
                 nuevos_repos = [
-                    {
-                        "id": repo.id,
-                        "title": repo.title,
-                        "url": repo.url,
+                {
+                    "id": repo.id,
+                    "title": repo.title,
+                    "url": repo.url,
                         "description": repo.description,
-                        "image_url": repo.image_url,
+                    "image_url": repo.image_url,
                         "created_at": repo.created_at.isoformat() if repo.created_at else None,
-                    }
-                    for repo in repositories
-                ]
+                }
+                for repo in repositories
+            ]
                 if append:
                     self.repositories += nuevos_repos
                 else:
