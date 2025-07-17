@@ -94,6 +94,15 @@ def blog_page() -> rx.Component:
                     ),
                     rx.text("No hay entradas de blog.", color="white")
                 ),
+                rx.cond(
+                    ~ContentState.blog_no_more,
+                    rx.button(
+                        "Cargar más entradas",
+                        on_click=ContentState.load_more_blogs,
+                        color_scheme="blue",
+                        mt="2"
+                    )
+                ),
                 width="100%",
                 max_width=["100%", "100%", "1200px"],
                 align_items="center",
@@ -108,7 +117,8 @@ def blog_page() -> rx.Component:
         ),
         width="100%",
         min_height="100vh",
-        background_color="#1a1a1a"
+        background_color="#1a1a1a",
+        on_mount=lambda: ContentState.load_content(page=1, per_page=ContentState.per_page, tipo="blog")
     )
 
 def render_full_post(post: dict):

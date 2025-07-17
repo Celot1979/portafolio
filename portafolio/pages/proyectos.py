@@ -40,6 +40,15 @@ def proyectos_page() -> rx.Component:
                     ),
                     rx.text("No hay proyectos guardados.", color="white")
                 ),
+                rx.cond(
+                    ~ContentState.repo_no_more,
+                    rx.button(
+                        "Cargar más proyectos",
+                        on_click=ContentState.load_more_repos,
+                        color_scheme="blue",
+                        mt="2"
+                    )
+                ),
                 width="100%",
                 max_width=["100%", "100%", "1200px"],
                 align_items="center",
@@ -57,5 +66,5 @@ def proyectos_page() -> rx.Component:
         background_color="#1a1a1a",
         padding=["1em", "2em"],
         spacing="2",
-        on_mount=ContentState.load_content
+        on_mount=lambda: ContentState.load_content(page=1, per_page=ContentState.per_page, tipo="repo")
     )
