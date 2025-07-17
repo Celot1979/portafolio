@@ -40,6 +40,13 @@ class ContentState(rx.State):
     # Estado para confirmación de borrado de blogs
     blog_confirm_delete_id: Optional[int] = None
     
+    # Variables de paginación
+    blog_page: int = 1
+    repo_page: int = 1
+    per_page: int = 10
+    blog_no_more: bool = False
+    repo_no_more: bool = False
+    
     @rx.var
     def selected_post_from_list(self) -> List[Dict]:
         """Filtra la lista de posts para encontrar el que coincide con el post_id de la URL."""
@@ -73,39 +80,71 @@ class ContentState(rx.State):
     def set_repo_image_url(self, image_url: str):
         self.repo_image_url = image_url
     
-    def load_content(self):
-        """Carga el contenido de la base de datos."""
+    def load_content(self, page: int = 1, per_page: int = 10, append: bool = False, tipo: str = "all"):
+        """Carga el contenido de la base de datos de forma paginada y optimizada."""
         try:
             db = next(get_db())
-            blog_posts = db.query(BlogPost).all()
-            repositories = db.query(Repository).all()
-            
-            # Convertir los objetos a diccionarios
-            self.blog_posts = [
-                {
-                    "id": int(post.id) if post.id is not None else None,
-                    "title": post.title,
-                    "content": post.content,
-                    "image_url": post.image_url,
-                    "seo_description": post.seo_description,
-                }
-                for post in blog_posts
-            ]
-            
-            self.repositories = [
-                {
-                    "id": repo.id,
-                    "title": repo.title,
-                    "url": repo.url,
-                    "image_url": repo.image_url,
-                }
-                for repo in repositories
-            ]
+            if tipo in ("all", "blog"):
+                blog_posts = (
+                    db.query(BlogPost.id, BlogPost.title, BlogPost.image_url, BlogPost.seo_description, BlogPost.created_at)
+                    .order_by(BlogPost.created_at.desc())
+                    .limit(per_page)
+                    .offset((page - 1) * per_page)
+                    .all()
+                )
+                nuevos_blogs = [
+                    {
+                        "id": int(post.id) if post.id is not None else None,
+                        "title": post.title,
+                        "image_url": post.image_url,
+                        "seo_description": post.seo_description,
+                        "created_at": post.created_at.isoformat() if post.created_at else None,
+                    }
+                    for post in blog_posts
+                ]
+                if append:
+                    self.blog_posts += nuevos_blogs
+                else:
+                    self.blog_posts = nuevos_blogs
+                self.blog_no_more = len(nuevos_blogs) < per_page
+            if tipo in ("all", "repo"):
+                repositories = (
+                    db.query(Repository.id, Repository.title, Repository.url, Repository.image_url, Repository.created_at)
+                    .order_by(Repository.created_at.desc())
+                    .limit(per_page)
+                    .offset((page - 1) * per_page)
+                    .all()
+                )
+                nuevos_repos = [
+                    {
+                        "id": repo.id,
+                        "title": repo.title,
+                        "url": repo.url,
+                        "image_url": repo.image_url,
+                        "created_at": repo.created_at.isoformat() if repo.created_at else None,
+                    }
+                    for repo in repositories
+                ]
+                if append:
+                    self.repositories += nuevos_repos
+                else:
+                    self.repositories = nuevos_repos
+                self.repo_no_more = len(nuevos_repos) < per_page
         except Exception as e:
             print(f"Error al cargar el contenido: {str(e)}")
         finally:
             self.content_loaded = True
             db.close()
+
+    def load_more_blogs(self):
+        if not self.blog_no_more:
+            self.blog_page += 1
+            self.load_content(page=self.blog_page, per_page=self.per_page, append=True, tipo="blog")
+
+    def load_more_repos(self):
+        if not self.repo_no_more:
+            self.repo_page += 1
+            self.load_content(page=self.repo_page, per_page=self.per_page, append=True, tipo="repo")
     
     def create_blog_post(self):
         """Añade una nueva entrada de blog."""
