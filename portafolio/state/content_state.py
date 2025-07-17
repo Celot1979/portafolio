@@ -15,6 +15,7 @@ class ContentState(rx.State):
     blog_content: str = ""
     blog_image_url: str = ""
     blog_message: str = ""
+    blog_seo_description: str = ""
     
     # Campos para repositorios
     repo_title: str = ""
@@ -40,7 +41,7 @@ class ContentState(rx.State):
     blog_confirm_delete_id: Optional[int] = None
     
     @rx.var
-    def selected_post_from_list(self) -> list[dict]:
+    def selected_post_from_list(self) -> List[Dict]:
         """Filtra la lista de posts para encontrar el que coincide con el post_id de la URL."""
         post_id = self.router.page.params.get("post_id", "")
         if not self.blog_posts or not post_id:
@@ -56,6 +57,9 @@ class ContentState(rx.State):
 
     def set_blog_image_url(self, image_url: str):
         self.blog_image_url = image_url
+
+    def set_blog_seo_description(self, seo_description: str):
+        self.blog_seo_description = seo_description
 
     def set_repo_title(self, title: str):
         self.repo_title = title
@@ -83,6 +87,7 @@ class ContentState(rx.State):
                     "title": post.title,
                     "content": post.content,
                     "image_url": post.image_url,
+                    "seo_description": post.seo_description,
                 }
                 for post in blog_posts
             ]
@@ -113,7 +118,8 @@ class ContentState(rx.State):
             new_post = BlogPost(
                 title=self.blog_title,
                 content=self.blog_content,
-                image_url=self.blog_image_url or None
+                image_url=self.blog_image_url or None,
+                seo_description=self.blog_seo_description or None
             )
             db.add(new_post)
             db.commit()
@@ -124,12 +130,14 @@ class ContentState(rx.State):
                 "title": new_post.title,
                 "content": new_post.content,
                 "image_url": new_post.image_url,
+                "seo_description": new_post.seo_description,
             })
             
             # Limpiar el formulario
             self.blog_title = ""
             self.blog_content = ""
             self.blog_image_url = ""
+            self.blog_seo_description = ""
             self.blog_message = "Entrada de blog añadida correctamente"
             # Recargar la lista completa para asegurar sincronización
             self.load_content()
@@ -217,6 +225,7 @@ class ContentState(rx.State):
             self.blog_title = post["title"]
             self.blog_content = post["content"]
             self.blog_image_url = post.get("image_url", "")
+            self.blog_seo_description = post.get("seo_description", "")
             self.blog_message = "Editando entrada de blog"
 
     def save_edit_blog(self):
@@ -234,6 +243,7 @@ class ContentState(rx.State):
                 post.title = self.blog_title
                 post.content = self.blog_content
                 post.image_url = self.blog_image_url or None
+                post.seo_description = self.blog_seo_description or None
                 db.commit()
                 # Actualizar en la lista local
                 for p in self.blog_posts:
@@ -241,6 +251,7 @@ class ContentState(rx.State):
                         p["title"] = self.blog_title
                         p["content"] = self.blog_content
                         p["image_url"] = self.blog_image_url
+                        p["seo_description"] = self.blog_seo_description
                         break
                 self.blog_message = "Entrada de blog actualizada correctamente"
             else:
@@ -250,6 +261,7 @@ class ContentState(rx.State):
             self.blog_title = ""
             self.blog_content = ""
             self.blog_image_url = ""
+            self.blog_seo_description = ""
         except Exception as e:
             self.blog_message = f"Error al editar la entrada: {str(e)}"
         finally:

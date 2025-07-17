@@ -43,5 +43,6 @@ class BlogPost(Base):
     title = Column(String(255), nullable=False)
     content = Column(Text, nullable=False)
     image_url = Column(String(255))
+    seo_description = Column(String(255))
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow) 

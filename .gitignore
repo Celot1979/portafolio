@@ -1,9 +1,9 @@
-.states
 *.db
 *.py[cod]
+.env
+.states
 .web
 __pycache__/
 assets/external/
-trabajo2/
-.env
 backups/
+trabajo2/

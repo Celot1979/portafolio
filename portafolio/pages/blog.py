@@ -6,6 +6,7 @@ from portafolio.state.content_state import ContentState
 from portafolio.state.blog_page_state import BlogPageState
 from portafolio.models import BlogPost
 from portafolio.database import get_db
+import os
 
 def generar_resumen(contenido, longitud=200):
     if not isinstance(contenido, str):
@@ -135,7 +136,19 @@ def render_full_post(post: dict):
                 margin_bottom="1em"
             ),
             rx.link(
-                rx.button("Volver al blog", color_scheme="gray", variant="outline"),
+                rx.button(
+                    "Volver al blog",
+                    variant="outline",
+                    color="white",
+                    border="2px solid #fff",
+                    background="transparent",
+                    border_radius="full",
+                    px="6",
+                    py="4",
+                    font_size="1.1em",
+                    font_weight="medium",
+                    _hover={"background": "#232526", "color": "#00e0ff", "border": "2px solid #00e0ff"}
+                ),
                 href="/blog"
             ),
             spacing="4",
@@ -154,28 +167,28 @@ def render_full_post(post: dict):
 
 @rx.page(route="/blog/[post_id]", on_load=ContentState.load_content)
 def blog_detail_page():
-    return rx.vstack(
-        menu(),
-        rx.center(
-            rx.cond(
-                ContentState.content_loaded,
-                # Contenido cargado, ahora decide si mostrar post o error
+    # Construye la URL base para og:url
+    base_url = os.environ.get("BASE_URL", "https://portafolio-gold-apple.reflex.run")
+    return rx.fragment(
+        rx.vstack(
+            menu(),
+            rx.center(
                 rx.cond(
-                    ContentState.selected_post_from_list.length() > 0,
-                    # Post encontrado
-                    render_full_post(ContentState.selected_post_from_list[0]),
-                    # Post no encontrado
-                    rx.text("Entrada de blog no encontrada.", color="red", font_size="1.3em")
+                    ContentState.content_loaded,
+                    rx.cond(
+                        ContentState.selected_post_from_list.length() > 0,
+                        render_full_post(ContentState.selected_post_from_list[0]),
+                        rx.text("Entrada de blog no encontrada.", color="red", font_size="1.3em")
+                    ),
+                    rx.text("Cargando...", color="white", font_size="1.3em")
                 ),
-                # Contenido aún no cargado
-                rx.text("Cargando...", color="white", font_size="1.3em")
+                width="100%",
+                min_height="calc(100vh - 64px)",
+                align_items="center",
+                justify_content="center"
             ),
             width="100%",
-            min_height="calc(100vh - 64px)",
-            align_items="center",
-            justify_content="center"
-        ),
-        width="100%",
-        min_height="100vh",
-        background_color="#1a1a1a"
+            min_height="100vh",
+            background_color="#1a1a1a"
+        )
     )

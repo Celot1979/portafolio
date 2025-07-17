@@ -130,6 +130,16 @@ def new_blog_page():
                                 on_change=ContentState.set_blog_image_url,
                                 size="3"
                             ),
+                            rx.text_area(
+                                placeholder="Descripción SEO (máx. 160 caracteres)",
+                                id="seo_description",
+                                mb="4",
+                                width="100%",
+                                value=ContentState.blog_seo_description,
+                                on_change=ContentState.set_blog_seo_description,
+                                size="3",
+                                max_length=160
+                            ),
                             rx.text("""
 Puedes usar **Markdown** para dar formato al contenido:
 - **Negrita**: `**texto**`
@@ -151,7 +161,7 @@ Puedes usar **Markdown** para dar formato al contenido:
                             ),
                             rx.button(
                                 rx.cond(
-                                    (~ContentState.blog_edit_id.is_none()) & (ContentState.blog_posts.length() > 0),
+                                    (ContentState.blog_edit_id is not None) & (ContentState.blog_posts.length() > 0),
                                     "Guardar cambios",
                                     "Guardar entrada"
                                 ),
@@ -161,7 +171,7 @@ Puedes usar **Markdown** para dar formato al contenido:
                                 width="100%",
                                 mt="2",
                                 is_disabled=rx.cond(
-                                    (~ContentState.blog_edit_id.is_none()) & (ContentState.blog_posts.length() == 0),
+                                    (ContentState.blog_edit_id is not None) & (ContentState.blog_posts.length() == 0),
                                     True,
                                     False
                                 )
@@ -171,7 +181,7 @@ Puedes usar **Markdown** para dar formato al contenido:
                             width="100%"
                         ),
                         on_submit=rx.cond(
-                            (~ContentState.blog_edit_id.is_none()) & (ContentState.blog_posts.length() > 0),
+                            (ContentState.blog_edit_id is not None) & (ContentState.blog_posts.length() > 0),
                             ContentState.save_edit_blog,
                             ContentState.create_blog_post
                         ),
