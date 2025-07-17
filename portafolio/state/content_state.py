@@ -109,7 +109,7 @@ class ContentState(rx.State):
                 self.blog_no_more = len(nuevos_blogs) < per_page
             if tipo in ("all", "repo"):
                 repositories = (
-                    db.query(Repository.id, Repository.title, Repository.url, Repository.image_url, Repository.created_at)
+                    db.query(Repository.id, Repository.title, Repository.url, Repository.description, Repository.image_url, Repository.created_at)
                     .order_by(Repository.created_at.desc())
                     .limit(per_page)
                     .offset((page - 1) * per_page)
@@ -120,6 +120,7 @@ class ContentState(rx.State):
                         "id": repo.id,
                         "title": repo.title,
                         "url": repo.url,
+                        "description": repo.description,
                         "image_url": repo.image_url,
                         "created_at": repo.created_at.isoformat() if repo.created_at else None,
                     }
@@ -191,32 +192,30 @@ class ContentState(rx.State):
         if not all([self.repo_title, self.repo_url]):
             self.repo_message = "El título y la URL son obligatorios."
             return
-            
         try:
             db = next(get_db())
             new_repo = Repository(
                 title=self.repo_title,
                 url=self.repo_url,
-                image_url=self.repo_image_url or None
+                description=self.repo_description,
+                image_url=self.repo_image_url
             )
             db.add(new_repo)
             db.commit()
             db.refresh(new_repo)
-            
             self.repositories.append({
                 "id": new_repo.id,
                 "title": new_repo.title,
                 "url": new_repo.url,
+                "description": new_repo.description,
                 "image_url": new_repo.image_url,
             })
-            
             # Limpiar el formulario
             self.repo_title = ""
             self.repo_description = ""
             self.repo_url = ""
             self.repo_image_url = ""
             self.repo_message = "Repositorio añadido correctamente"
-            
         except Exception as e:
             self.repo_message = f"Error al añadir el repositorio: {str(e)}"
         finally:
@@ -331,13 +330,15 @@ class ContentState(rx.State):
             if repo:
                 repo.title = self.repo_title
                 repo.url = self.repo_url
-                repo.image_url = self.repo_image_url or None
+                repo.description = self.repo_description
+                repo.image_url = self.repo_image_url
                 db.commit()
                 # Actualizar en la lista local
                 for r in self.repositories:
                     if r["id"] == self.repo_edit_id:
                         r["title"] = self.repo_title
                         r["url"] = self.repo_url
+                        r["description"] = self.repo_description
                         r["image_url"] = self.repo_image_url
                         break
                 self.repo_message = "Repositorio actualizado correctamente"

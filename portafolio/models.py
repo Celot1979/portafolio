@@ -31,6 +31,7 @@ class Repository(Base):
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String(255), nullable=False)
     url = Column(String(255), nullable=False)
+    description = Column(Text)  # Nuevo campo para la descripción
     image_url = Column(String(255))
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)

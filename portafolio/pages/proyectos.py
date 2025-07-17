@@ -21,7 +21,16 @@ def proyectos_page() -> rx.Component:
                                 ContentState.repositories,
                                 lambda repo: rx.box(
                                     rx.heading(repo["title"], size="4", color="white", word_wrap="break-word"),
-                                    rx.text(repo["url"], color="gray", word_wrap="break-word"),
+                                    rx.text(repo.get("description", ""), color="#b0b0b0", font_size="1em", margin_bottom="0.5em"),
+                                    rx.link(
+                                        repo["url"],
+                                        href=repo["url"],
+                                        color="#00bfff",
+                                        is_external=True,
+                                        word_break="break-all",
+                                        _hover={"text_decoration": "underline"},
+                                        margin_bottom="0.5em"
+                                    ),
                                     rx.cond(
                                         repo.get("image_url"),
                                         rx.image(src=repo["image_url"], alt=repo["title"], width="100%", height="auto", border_radius="md"),
