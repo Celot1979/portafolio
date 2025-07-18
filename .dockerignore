@@ -1,0 +1,150 @@
+# flyctl launch added from .gitignore
+**/*.db
+**/*.py[cod]
+**/.env
+**/.states
+**/.web
+**/__pycache__
+**/assets/external
+**/backups
+**/trabajo2
+
+# flyctl launch added from .web/.gitignore
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+.web/_static
+
+# dependencies
+.web/node_modules
+.web/.pnp
+.web/**/.pnp.js
+
+# testing
+.web/coverage
+
+# next.js
+.web/.next
+.web/out
+
+# production
+.web/build
+
+# misc
+.web/**/.DS_Store
+.web/**/*.pem
+
+# debug
+.web/**/npm-debug.log*
+.web/**/yarn-debug.log*
+.web/**/yarn-error.log*
+
+# local env files
+.web/**/.env.local
+.web/**/.env.development.local
+.web/**/.env.test.local
+.web/**/.env.production.local
+
+# vercel
+.web/**/.vercel
+
+# DS_Store
+.web/**/.DS_Store
+
+# flyctl launch added from .web/node_modules/tailwindcss/stubs/.gitignore
+!.web/node_modules/tailwindcss/stubs/**/*
+
+# flyctl launch added from trabajo/bin/.gitignore
+trabajo/bin/**/*.db
+trabajo/bin/**/*.py[cod]
+trabajo/bin/**/.web
+trabajo/bin/**/__pycache__
+trabajo/bin/**/assets/external
+
+# flyctl launch added from trabajo/lib/python3.8/site-packages/reflex/.templates/apps/demo/.gitignore
+trabajo/lib/python3.8/site-packages/reflex/.templates/apps/demo/**/*.db
+trabajo/lib/python3.8/site-packages/reflex/.templates/apps/demo/**/*.py[cod]
+trabajo/lib/python3.8/site-packages/reflex/.templates/apps/demo/**/.web
+trabajo/lib/python3.8/site-packages/reflex/.templates/apps/demo/**/__pycache__
+
+# flyctl launch added from trabajo/lib/python3.8/site-packages/reflex/.templates/web/.gitignore
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+trabajo/lib/python3.8/site-packages/reflex/.templates/web/_static
+
+# dependencies
+trabajo/lib/python3.8/site-packages/reflex/.templates/web/node_modules
+trabajo/lib/python3.8/site-packages/reflex/.templates/web/.pnp
+trabajo/lib/python3.8/site-packages/reflex/.templates/web/**/.pnp.js
+
+# testing
+trabajo/lib/python3.8/site-packages/reflex/.templates/web/coverage
+
+# next.js
+trabajo/lib/python3.8/site-packages/reflex/.templates/web/.next
+trabajo/lib/python3.8/site-packages/reflex/.templates/web/out
+
+# production
+trabajo/lib/python3.8/site-packages/reflex/.templates/web/build
+
+# misc
+trabajo/lib/python3.8/site-packages/reflex/.templates/web/**/.DS_Store
+trabajo/lib/python3.8/site-packages/reflex/.templates/web/**/*.pem
+
+# debug
+trabajo/lib/python3.8/site-packages/reflex/.templates/web/**/npm-debug.log*
+trabajo/lib/python3.8/site-packages/reflex/.templates/web/**/yarn-debug.log*
+trabajo/lib/python3.8/site-packages/reflex/.templates/web/**/yarn-error.log*
+
+# local env files
+trabajo/lib/python3.8/site-packages/reflex/.templates/web/**/.env.local
+trabajo/lib/python3.8/site-packages/reflex/.templates/web/**/.env.development.local
+trabajo/lib/python3.8/site-packages/reflex/.templates/web/**/.env.test.local
+trabajo/lib/python3.8/site-packages/reflex/.templates/web/**/.env.production.local
+
+# vercel
+trabajo/lib/python3.8/site-packages/reflex/.templates/web/**/.vercel
+
+# DS_Store
+trabajo/lib/python3.8/site-packages/reflex/.templates/web/**/.DS_Store
+
+# flyctl launch added from trabajo2/lib/python3.12/site-packages/reflex/.templates/web/.gitignore
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+trabajo2/lib/python3.12/site-packages/reflex/.templates/web/_static
+
+# dependencies
+trabajo2/lib/python3.12/site-packages/reflex/.templates/web/node_modules
+trabajo2/lib/python3.12/site-packages/reflex/.templates/web/.pnp
+trabajo2/lib/python3.12/site-packages/reflex/.templates/web/**/.pnp.js
+
+# testing
+trabajo2/lib/python3.12/site-packages/reflex/.templates/web/coverage
+
+# next.js
+trabajo2/lib/python3.12/site-packages/reflex/.templates/web/.next
+trabajo2/lib/python3.12/site-packages/reflex/.templates/web/out
+
+# production
+trabajo2/lib/python3.12/site-packages/reflex/.templates/web/build
+
+# misc
+trabajo2/lib/python3.12/site-packages/reflex/.templates/web/**/.DS_Store
+trabajo2/lib/python3.12/site-packages/reflex/.templates/web/**/*.pem
+
+# debug
+trabajo2/lib/python3.12/site-packages/reflex/.templates/web/**/npm-debug.log*
+trabajo2/lib/python3.12/site-packages/reflex/.templates/web/**/yarn-debug.log*
+trabajo2/lib/python3.12/site-packages/reflex/.templates/web/**/yarn-error.log*
+
+# local env files
+trabajo2/lib/python3.12/site-packages/reflex/.templates/web/**/.env.local
+trabajo2/lib/python3.12/site-packages/reflex/.templates/web/**/.env.development.local
+trabajo2/lib/python3.12/site-packages/reflex/.templates/web/**/.env.test.local
+trabajo2/lib/python3.12/site-packages/reflex/.templates/web/**/.env.production.local
+
+# vercel
+trabajo2/lib/python3.12/site-packages/reflex/.templates/web/**/.vercel
+
+# DS_Store
+trabajo2/lib/python3.12/site-packages/reflex/.templates/web/**/.DS_Store
+fly.toml
