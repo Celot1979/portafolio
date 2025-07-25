@@ -1,5 +1,6 @@
 import reflex as rx
 from portafolio.components.menu import menu
+from ..styles import heading_style, colors, animations
 
 class QuienSoyState(rx.State):
     pass
@@ -9,7 +10,7 @@ def quien_soy_page():
         menu(),
         rx.center(
             rx.vstack(
-                rx.heading("Quién soy", size="6", color="white", font_family="sans-serif"),
+                rx.heading("Quién soy", size="6", **heading_style),
                 rx.hstack(
                     rx.image(
                         src="https://i.ibb.co/q3MnTrT9/Portafolio-yo.jpg",
@@ -22,12 +23,12 @@ def quien_soy_page():
                     rx.vstack(
                         rx.text(
                             "Mi nombre es Daniel. A diferencia de la mayoría de los desarrolladores me he acercado con pasión a la tecnología en mi madurez. Un aspecto a valorar que me permite ofrecer la ilusión de quién inicia un nuevo camino profesional y la solvencia de la experiencia. Mi formación se ha realizado tanto en cursos guiados como autodidacta. Me ofrezco para participar en proyectos y desplegar todas mis habilidades.",
-                            color="gray",
+                            color=colors['text'],
                             font_size=["1em", "1.1em", "1.2em"],
                             text_align="left"
                         ),
                         padding=["1em", "2em"],
-                        background_color="#2d2d2d",
+                        background_color=colors['secondary_bg'],
                         border_radius="lg",
                         width="100%",
                         align_items="flex-start",
@@ -41,8 +42,6 @@ def quien_soy_page():
                 ),
                 spacing="2",
                 padding=["1em", "2em"],
-                background_color="#1a1a1a",
-                color="white",
                 width="100%"
             ),
             width="100%",
@@ -52,6 +51,5 @@ def quien_soy_page():
         ),
         width="100%",
         min_height="100vh",
-        background_color="#1a1a1a",
-        color="white"
+        **animations['fade_in']
     )

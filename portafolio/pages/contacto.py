@@ -2,6 +2,7 @@
 
 import reflex as rx
 from portafolio.components.menu import menu
+from ..styles import heading_style, colors, button_style, animations
 
 def contacto_page() -> rx.Component:
     """Renderiza la página de contacto."""
@@ -10,38 +11,36 @@ def contacto_page() -> rx.Component:
         menu(),
         rx.center(
             rx.vstack(
-                rx.heading("Contacto", size="6", color="white", font_family="sans-serif", margin_bottom=["1em", "2em"]),
+                rx.heading("Contacto", size="6", **heading_style),
                 rx.vstack(
-                    rx.heading("¿Tienes un proyecto en mente?", size="4", color="white", font_family="sans-serif"),
+                    rx.heading("¿Tienes un proyecto en mente?", size="4", **heading_style),
                     rx.text(
                         "Estoy siempre abierto a nuevas oportunidades y colaboraciones. Si tienes un proyecto en mente o quieres discutir posibilidades, no dudes en contactarme.",
-                        color="gray",
+                        color=colors['text'],
                         font_size=["1em", "1.1em", "1.2em"],
                         margin_bottom=["1em", "2em"]
                     ),
                     rx.hstack(
                         rx.link(
-                            "Enviar Email",
+                            rx.button(
+                                "Enviar Email",
+                                **button_style
+                            ),
                             href="mailto:dgarciamartinez53@gmail.com",
-                            color="#444",
-                            background_color="white",
-                            padding="0.5em 1em",
-                            border_radius="0.5em",
-                            _hover={"background_color": "#eee", "transform": "translateY(-2px)", "transition": "all 0.3s ease"}
                         ),
                         rx.link(
-                            "Telegram",
+                            rx.button(
+                                "Telegram",
+                                **{k: v for k, v in button_style.items() if k not in ['background_color', '_hover']},
+                                background_color="#0088cc", # Color de Telegram
+                                _hover={"background_color": "#007bb5"}
+                            ),
                             href="https://t.me/Celot1979",
-                            color="white",
-                            background_color="#0088cc", # Color de Telegram
-                            padding="0.5em 1em",
-                            border_radius="0.5em",
-                            _hover={"background_color": "#007bb5", "transform": "translateY(-2px)", "transition": "all 0.3s ease"}
                         ),
                         spacing="1"
                     ),
                     padding=["1em", "2em"],
-                    background_color="#2d2d2d",
+                    background_color=colors['secondary_bg'],
                     border_radius="lg",
                     width="100%",
                     margin_bottom=["1em", "2em"],
@@ -58,7 +57,7 @@ def contacto_page() -> rx.Component:
         ),
         width="100%",
         min_height="100vh",
-        background_color="#1a1a1a",
         padding=["1em", "2em"],
-        spacing="2"
+        spacing="2",
+        **animations['fade_in']
     ) 

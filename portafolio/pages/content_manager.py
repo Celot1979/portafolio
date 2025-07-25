@@ -2,6 +2,7 @@
 
 import reflex as rx
 from portafolio.components.menu import menu
+from ..styles import heading_style, button_style, animations, colors
 
 def content_manager_page() -> rx.Component:
     """Renderiza el gestor de contenido."""
@@ -9,15 +10,19 @@ def content_manager_page() -> rx.Component:
         menu(),
         rx.center(
             rx.vstack(
-                rx.heading("Gestor de Contenido", size="6", color="white", margin_bottom=["0.5em", "1em"]),
+                rx.heading("Gestor de Contenido", size="6", **heading_style),
                 rx.vstack(
                     rx.link(
-                        rx.button("Crear Blog Post", color_scheme="blue"),
+                        rx.button("Crear Blog Post", **button_style),
                         href="/content/new-blog",
                         width="100%"
                     ),
                     rx.link(
-                        rx.button("Crear Repositorio", color_scheme="green"),
+                        rx.button("Crear Repositorio", **{k: v for k, v in button_style.items() if k not in ['background_color', '_hover']},
+                                background_color="#00A86B", # Color de Telegram
+                                _hover={"background_color": "#007bb5"},
+                                transition="all 0.3s ease"
+                            ),
                         href="/content/new-repo",
                         width="100%"
                     ),
@@ -40,5 +45,6 @@ def content_manager_page() -> rx.Component:
         ),
         width="100%",
         min_height="100vh",
-        background_color="#1a1a1a",
+        background_color=colors['background'],
+        **animations['fade_in']
     )

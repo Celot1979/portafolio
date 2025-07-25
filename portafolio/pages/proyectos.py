@@ -3,6 +3,7 @@
 import reflex as rx
 from portafolio.components.menu import menu
 from portafolio.state.content_state import ContentState
+from ..styles import heading_style, colors, link_style, button_style, animations
 
 def proyectos_page() -> rx.Component:
     """Renderiza la página de proyectos."""
@@ -10,34 +11,39 @@ def proyectos_page() -> rx.Component:
         menu(),
         rx.center(
             rx.vstack(
-                rx.heading("Proyectos", size="6", color="white", font_family="sans-serif", margin_bottom=["1em", "2em"]),
+                rx.heading("Proyectos", size="6", **heading_style),
                 rx.cond(
                     ~ContentState.content_loaded,
-                    rx.box(),  # No mostrar nada mientras carga
+                    rx.box(),  # Placeholder para el indicador de carga
                     rx.cond(
                     ContentState.repositories,
                     rx.grid(
                         rx.foreach(
                             ContentState.repositories,
                             lambda repo: rx.box(
-                                rx.heading(repo["title"], size="4", color="white", word_wrap="break-word"),
-                                    rx.text(repo.get("description", ""), color="#b0b0b0", font_size="1em", margin_bottom="0.5em"),
+                                rx.heading(repo["title"], size="4", **heading_style, word_wrap="break-word"),
+                                    rx.text(repo.get("description", ""), color=colors['text'], font_size="1em", margin_bottom="0.5em"),
                                     rx.link(
                                         repo["url"],
                                         href=repo["url"],
-                                        color="#00bfff",
+                                        **link_style,
                                         is_external=True,
                                         word_break="break-all",
-                                        _hover={"text_decoration": "underline"},
                                         margin_bottom="0.5em"
                                     ),
                                 rx.cond(
                                     repo.get("image_url"),
                                     rx.image(src=repo["image_url"], alt=repo["title"], width="100%", height="auto", border_radius="md"),
                                 ),
-                                background_color="#222",
+                                background_color=colors['secondary_bg'],
                                 border_radius="md",
                                 p="4",
+                                _hover={
+                                    "transform": "translateY(-5px)",
+                                    "box_shadow": "0 8px 16px rgba(0,0,0,0.2)",
+                                    "transition": "all 0.3s ease"
+                                },
+                                transition="all 0.3s ease"
                             )
                         ),
                         columns={
@@ -50,7 +56,7 @@ def proyectos_page() -> rx.Component:
                         max_width=["100%", "100%", "1200px"],
                         margin_x="auto"
                     ),
-                    rx.text("No hay proyectos guardados.", color="white")
+                    rx.text("No hay proyectos guardados.", color=colors['text'])
                     )
                 ),
                 rx.cond(
@@ -58,7 +64,7 @@ def proyectos_page() -> rx.Component:
                     rx.button(
                         "Cargar más proyectos",
                         on_click=ContentState.load_more_repos,
-                        color_scheme="blue",
+                        **button_style,
                         mt="2"
                     )
                 ),
@@ -76,8 +82,8 @@ def proyectos_page() -> rx.Component:
         ),
         width="100%",
         min_height="100vh",
-        background_color="#1a1a1a",
         padding=["1em", "2em"],
         spacing="2",
-        on_mount=lambda: ContentState.load_content(page=1, per_page=ContentState.per_page, tipo="repo")
+        on_mount=lambda: ContentState.load_content(page=1, per_page=ContentState.per_page, tipo="repo"),
+        **animations['fade_in']
     )

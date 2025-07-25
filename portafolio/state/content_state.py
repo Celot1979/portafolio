@@ -47,6 +47,8 @@ class ContentState(rx.State):
     blog_no_more: bool = False
     repo_no_more: bool = False
     
+    selected_blog_post: Optional[Dict] = None
+
     @rx.var
     def selected_post_from_list(self) -> List[Dict]:
         """Filtra la lista de posts para encontrar el que coincide con el post_id de la URL."""
@@ -55,6 +57,32 @@ class ContentState(rx.State):
             return []
         return [p for p in self.blog_posts if str(p.get("id")) == post_id]
     
+    def load_single_blog_post(self):
+        """Carga una única entrada de blog por su ID desde la URL."""
+        post_id = self.router.page.params.get("post_id", "")
+        if not post_id:
+            self.selected_blog_post = None
+            return
+        try:
+            db = next(get_db())
+            post = db.query(BlogPost).filter(BlogPost.id == post_id).first()
+            if post:
+                self.selected_blog_post = {
+                    "id": int(post.id) if post.id is not None else None,
+                    "title": post.title,
+                    "content": post.content,
+                    "image_url": post.image_url,
+                    "seo_description": post.seo_description,
+                    "created_at": post.created_at.isoformat() if post.created_at else None,
+                }
+            else:
+                self.selected_blog_post = None
+        except Exception as e:
+            print(f"Error al cargar la entrada de blog individual: {str(e)}")
+            self.selected_blog_post = None
+        finally:
+            db.close()
+
     # Métodos set_ para actualizar los atributos
     def set_blog_title(self, title: str):
         self.blog_title = title
@@ -86,7 +114,7 @@ class ContentState(rx.State):
             db = next(get_db())
             if tipo in ("all", "blog"):
                 blog_posts = (
-                    db.query(BlogPost.id, BlogPost.title, BlogPost.image_url, BlogPost.seo_description, BlogPost.created_at)
+                    db.query(BlogPost.id, BlogPost.title, BlogPost.content, BlogPost.image_url, BlogPost.seo_description, BlogPost.created_at)
                     .order_by(BlogPost.created_at.desc())
                     .limit(per_page)
                     .offset((page - 1) * per_page)
